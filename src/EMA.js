@@ -1,13 +1,13 @@
 let Layer = require('./Layer');
 
-class RAI {
+class EMA {
 
     constructor() {
-        if (!RAI.instance) {
-            RAI.instance = this;
+        if (!EMA.instance) {
+            EMA.instance = this;
             this.init();
         }
-        return RAI.instance;
+        return EMA.instance;
     }
 
     init() {
@@ -67,8 +67,13 @@ class RAI {
         this._exhibitAnInterface(signalInterface);
     }
 
-    addPartialMethod(originalAdadp, obj, methodName, variation) {
-        this._variations.push([originalAdadp, obj, methodName, variation]);
+    addPartialMethod(originalLayer, objs, methodName, variation) {
+        objs = Array.isArray(objs)? objs: [objs];
+        objs.forEach(obj => this._addPartialMethod(originalLayer, obj, methodName, variation));
+    }
+
+    _addPartialMethod(originalLayer, obj, methodName, variation) {
+        this._variations.push([originalLayer, obj, methodName, variation]);
     }
 
     _receiveSignalsForSignalInterfaces(layer) {
@@ -133,18 +138,6 @@ class RAI {
         })
     };
 
-    getInactiveLayers() {
-        return this.getLayers(function (layer) {
-            return !layer.isActive()
-        })
-    };
-
-    _removingLayers(originalLayer) {
-        this._variations = this._variations.filter(function (variation) {
-            return originalLayer !== variation[0];
-        });
-    }
-
     _cleanSignalComposition(originalLayer) {
         let layer = this._layers.find(function (layer) {
             return layer.__original__ === originalLayer;
@@ -152,6 +145,20 @@ class RAI {
 
         layer.cleanCondition();
     }
+
+    //only for debugging
+    getInactiveLayers() {
+        return this.getLayers(function (layer) {
+            return !layer.isActive()
+        })
+    };
+
+    //only for debugging
+    _removingLayers(originalLayer) {
+        this._variations = this._variations.filter(function (variation) {
+            return originalLayer !== variation[0];
+        });
+    }
 }
 
-module.exports = new RAI();
+module.exports = new EMA();

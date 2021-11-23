@@ -1,11 +1,11 @@
-const CSI = require('./src/RAI');
-const Adaptation = require('./src/Layer');
+const EMA = require('./src/EMA');
+const Layer = require('./src/Layer');
 const Signal =  require('./src/Signal');
 const SignalComp = require('./src/SignalComp');
 
 module.exports = {
-    CSI: CSI,
-    Adaptation: Adaptation,
+    EMA: EMA,
+    Layer: Layer,
     Signal: Signal,
     SignalComp: SignalComp,
     show: console.log

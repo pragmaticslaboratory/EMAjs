@@ -1,4 +1,4 @@
-let {Signal, SignalComp, Adaptation, CSI, show} = require("../loader");
+let {Signal, SignalComp, Layer, EMA, show} = require("../loader");
 
 let battery = {
     name: "UMIDIGI",
@@ -16,9 +16,9 @@ let lowBattery = {
   condition: new SignalComp("level < 30")
 };
 
-CSI.exhibit(battery, {level: battery.charge});
-CSI.addPartialMethod(lowBattery, videoCard, "graph", function() {show("Low Performance")} );
-CSI.deploy(lowBattery);
+EMA.exhibit(battery, {level: battery.charge});
+EMA.addPartialMethod(lowBattery, videoCard, "graph", function() {show("Low Performance")} );
+EMA.deploy(lowBattery);
 
 videoCard.graph();
 

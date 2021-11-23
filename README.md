@@ -1,10 +1,7 @@
-# rai-js
-RAI-JS: Reactive Activation Interface for Context-Oriented Programming in JavaScript (https://github.com/pleger/rai-js)
+# EMA-js
+RAI-JS: An JavaScript implementation of an Expressive and Modular Activation (EMA) mechanism for Context-Oriented Programming. 
 
-This JavaScript library allows developers to support Context-Oriented Programming with Reactive Activation Interface for JavaScript.
-
-You can try this proposal online at: http://pleger.cl/sites/raijs
-
+Author: Paul Leger & Nicolás Cardozo
 
 License
 ----

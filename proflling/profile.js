@@ -1,4 +1,4 @@
-let {Signal, SignalComp, Adaptation, CSI, show} = require("../loader");
+let {Signal, SignalComp, Layer, EMA, show} = require("../loader");
 const t = require('exectimer');
 const Tick = t.Tick;
 
@@ -74,7 +74,7 @@ function objWithSIs() {
         }
     };
     obj.m();
-    CSI.exhibit(obj, {ss: obj.s});
+    EMA.exhibit(obj, {ss: obj.s});
 }
 
 function objWithAdaps() {
@@ -84,7 +84,7 @@ function objWithAdaps() {
             return this.s.value = 10;
         }
     };
-    CSI.deploy({condition: "ss > 5"});
+    EMA.deploy({condition: "ss > 5"});
     obj.m();
 
     return obj;
@@ -92,21 +92,21 @@ function objWithAdaps() {
 
 
     console.log("\n\nOnly objects with one signal:");
-    CSI.init();
+    EMA.init();
     executeProfile(0, onlyObj,function() {});
 
 console.log("\n\nIdem with signal interfaces:");
-CSI.init();
+EMA.init();
 
 executeProfile(1,objWithSIs, function () {
-    CSI.deploy({condition: "ss > 5"})
+    EMA.deploy({condition: "ss > 5"})
 },0);
 
 
 console.log("\n\nIdem with adaptations:");
-CSI.init();
+EMA.init();
 executeProfile(2,objWithAdaps, function (obj) {
-    CSI.exhibit(obj, {ss: obj.s})
+    EMA.exhibit(obj, {ss: obj.s})
 },0);
 
 showResults();

@@ -1,4 +1,4 @@
-let {Signal, SignalComp, Adaptation, CSI, show} = require("../loader");
+let {Signal, SignalComp, Layer, EMA, show} = require("../loader");
 
 let screen = {
     gyroscope: new Signal(0),
@@ -37,24 +37,24 @@ let portrait = {
 // End Adaptations
 
 
-CSI.exhibit(screen, {gyroLevel: screen.gyroscope});
-CSI.exhibit(playerView, {kindMovie: playerView.kind});
-CSI.exhibit(landscape, {landscape: landscape.condition});
+EMA.exhibit(screen, {gyroLevel: screen.gyroscope});
+EMA.exhibit(playerView, {kindMovie: playerView.kind});
+EMA.exhibit(landscape, {landscape: landscape.condition});
 
 //Adding two layers
-CSI.addPartialMethod(landscape, playerView, "draw", function () {
+EMA.addPartialMethod(landscape, playerView, "draw", function () {
     show("[LANDSCAPE-LAYER] Lanscape Mode");
-    Adaptation.proceed();
+    Layer.proceed();
 });
 
-CSI.addPartialMethod(portrait, playerView, "draw", function () {
+EMA.addPartialMethod(portrait, playerView, "draw", function () {
     show("[PORTRAIT-LAYER] Portrait");
-    Adaptation.proceed();
+    Layer.proceed();
 });
 
 
-CSI.deploy(landscape);
-CSI.deploy(portrait);
+EMA.deploy(landscape);
+EMA.deploy(portrait);
 
 playerView.draw();
 show("\n-Change SmartPhone position");

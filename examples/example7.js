@@ -1,50 +1,25 @@
-let {Signal, SignalComp, Adaptation, CSI, show} = require("../loader");
+let {Signal, SignalComp, Layer, EMA, show} = require("../loader");
 
-let smartWatch = {
-    isAwake: new Signal(false),
-    time: new Signal(1200),
-};
+let t = new Signal(0, "t");
+//let h = new Signal(0, "h");
 
+let ht = new SignalComp("t > 10", [t], "ht");
+//let hh = new SignalComp("h > 50", [h], "hh");
 
-let airConditioner = {
-    _temperature: 0,
-    adjustTemperature: function (val) {
-        show("Adjusting the temperature:" + val);
-        this._temperature = val;
-    }
-};
+let hto = new SignalComp("hto || ht", [ht], "hto");
+//hto.addSignal(hto);
 
-let musicPlayer = {
-    makeSleepNoise: function () {
-        show("make sleep sound");
-    }
-};
+t.value = 15;
 
-let sleepMode = {
-    condition: new SignalComp("$(--> awake awake (+ awake))$ && sleepTime > 0 && sleepTime < 700 "),
-    enter: function() {
-        airConditioner.adjustTemperature(26);
-        musicPlayer.makeSleepNoise();
-    },
-    exit: function () {
-        show("see the current state system");
-    }
-};
+console.log(t.value);
+console.log(ht.value);
+console.log(hto.value);
+console.log("\n");
+t.value = 8;
 
-
-
-CSI.exhibit(smartWatch, {sleepTime: smartWatch.time, awake: smartWatch.isAwake});
-CSI.deploy(sleepMode);
-
-smartWatch.time.value = 200;
-smartWatch.isAwake.value = true;
-smartWatch.isAwake.value = false;
-smartWatch.isAwake.value = true;
-smartWatch.isAwake.value = false;
-smartWatch.isAwake.value = true;
-smartWatch.isAwake.value = false;
-
-
+console.log(t.value);
+console.log(ht.value);
+console.log(hto.value);
 
 
 

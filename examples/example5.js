@@ -1,4 +1,4 @@
-let {Signal, SignalComp, Adaptation, CSI, show} = require("../loader");
+let {Signal, SignalComp, Layer, EMA, show} = require("../loader");
 
 let smartPhone = {
     houseLocation: new Signal(false)
@@ -26,13 +26,13 @@ let houseLight = {
 };
 
 //two objects exhibiting the same signal
-CSI.exhibit(smartPhone,
+EMA.exhibit(smartPhone,
     {isHere: smartPhone.houseLocation});
 
-CSI.exhibit(car,
+EMA.exhibit(car,
     {isHere: car.parked});
 
-CSI.deploy(houseLight);
+EMA.deploy(houseLight);
 
 //the car is here
 car.parked.value = true;

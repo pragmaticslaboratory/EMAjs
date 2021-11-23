@@ -1,5 +1,5 @@
 //add to the array what example you want to execute it
-const EXAMPLE_SCRIPTS = [2,9];
+const EXAMPLE_SCRIPTS = [1,2,3,4,5,6,7,8,9];
 
 EXAMPLE_SCRIPTS.forEach(function (example) {
     console.log("\n\nEXECUTING THE EXAMPLE: " + example + "\n========================");

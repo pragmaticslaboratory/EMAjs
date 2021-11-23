@@ -1,6 +1,6 @@
 let testCase = require('nodeunit').testCase;
 const Signal = require('../src/Signal');
-const RAI = require('../src/RAI');
+const RAI = require('../src/EMA');
 
 module.exports = testCase({
     'setUp': function (test) {
