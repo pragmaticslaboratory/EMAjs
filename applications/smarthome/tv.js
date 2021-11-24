@@ -6,7 +6,7 @@ function TV(name, room) {
     this.volume = 0
     this.location = room
     this.display = "off"
-    this.switch = function() {
+    this._switch = function() {
         this.state = !this.state
     }
     this.setVolume = function(level) {
@@ -17,13 +17,21 @@ function TV(name, room) {
     }
     this.turnOn = function() {
         this.display = "on";
-        this.switch();
+        this._switch();
+    }
+    this.turnOff = function() {
+        this.display = "off";
+        this._switch();
     }
     this.playSound = function(message) {
+        let tempVolume = this.volume;
         if(!this.state) {
-            console.log(`${message} output on ${this.location}'s ${this.name} at ${this.volume}%`)
+            if(tempVolume == 0)
+                this.setVolume(60);
+            console.log(`${message} output on ${this.location}'s ${this.name} at ${this.volume}% volume`)
+            this.setVolume(tempVolume)
         } else {
-            console.log(`Ring alarm on top-right corner of the display, as is ${this.display}`)
+            console.log(`Ring alarm on top-right corner of the display, as it is ${this.display}`)
             console.log(message)
         }
     }

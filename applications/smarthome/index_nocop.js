@@ -12,6 +12,6 @@ home.doorBell();
 
 //user using the tv in the bedroom
 console.log(" ")
-tv.switch()
+tv.turnOn()
 tv.setVolume(21)
 home.doorBell()
