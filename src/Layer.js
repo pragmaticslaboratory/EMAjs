@@ -36,11 +36,11 @@ function Layer(originalLayer) {
     };
 
     this._installPartialMethod = function() {
+
         PartialMethodsPool.forEachByLayer(this, function (obj, methodName, partialMethodImpl) {
             obj[methodName] = function () {
-                Layer.proceed = function () {
-                    let originalMethod = OriginalMethodsPool.get(obj, methodName);
-                    return originalMethod.apply(obj, arguments);
+                Layer.proceed = function () {      //todo: it currently does not support partial method chain!
+                    return Layer._executeOriginalMethod(obj, methodName, arguments);
                 };
 
                 let result = partialMethodImpl.apply(obj, arguments);
@@ -56,6 +56,13 @@ function Layer(originalLayer) {
             obj[methodName] = OriginalMethodsPool.get(obj, methodName);
         });
     };
+
+    Layer._executeOriginalMethod = function(obj, methodName, args) {
+        let originalMethod = OriginalMethodsPool.get(obj, methodName);
+        if (originalMethod === undefined) throw "No original method found";
+
+        return originalMethod.apply(obj, args);
+    }
 
     this.enableCondition = function() { //todo: when a condition is added, Should it check its predicate?
         let thiz = this;
