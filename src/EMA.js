@@ -26,12 +26,10 @@ class EMA {
     }
 
     undeploy(originalLayer) {
-        this._cleanSignalComposition(originalLayer);
-
-        //uninstalling partial methods & removing layers
         this._deployedLayers = this._deployedLayers.filter(function (layer) {
             if (layer.__original__ === originalLayer) {
-                layer._uninstallPartialMethods();
+                layer.cleanCondition(); //clean emission of condition
+                layer._uninstallPartialMethods(); //uninstall partial methods
                 return false;
             }
             return true; // not removing layer
@@ -52,11 +50,11 @@ class EMA {
         });
     }
 
-    _receiveSignalsForSignalInterfaces(layer) {    //it is to know if signals are already send data
+    _receiveSignalsForSignalInterfaces(deployedLayer) {    //it is to know if signals are already send data
         this._signalInterfacePool.forEach(function (si) {
             for (let field in si[1]) {
                 if (si[1].hasOwnProperty(field)) {
-                    layer.addSignal(si[1][field]);
+                    deployedLayer.addSignal(si[1][field]);
                 }
             }
         });
@@ -83,15 +81,6 @@ class EMA {
             }
         }
     }
-
-    _cleanSignalComposition(originalLayer) {
-        let layer = this._deployedLayers.find(function (layer) {
-            return layer.__original__ === originalLayer;
-        });
-
-        layer.cleanCondition();
-    }
-
 
     ///**** Methods for TESTING *****///
     //only for testing? (can you remove it?)

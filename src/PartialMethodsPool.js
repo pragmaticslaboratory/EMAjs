@@ -20,10 +20,10 @@ class PartialMethodsPool {
         this._partialMethods.push([obj, methodName, partialMethodImpl, originalLayer]);
     }
 
-    _get(layer) {
+    _get(deployedLayer) {
         return this._partialMethods.filter(function (partialMethod) {
             let originalLayer = partialMethod[3];
-            return layer.__original__ === originalLayer;
+            return deployedLayer.__original__ === originalLayer;
         });
     }
 
