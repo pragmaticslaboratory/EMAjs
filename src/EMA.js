@@ -46,11 +46,7 @@ class EMA {
 
     addPartialMethod(originalLayer, objs, methodName, partialMethodImpl) {
         objs = Array.isArray(objs)? objs: [objs];
-        objs.forEach(obj => this._addPartialMethod(originalLayer, obj, methodName, partialMethodImpl));
-    }
-
-    _addPartialMethod(originalLayer, obj, methodName, partialMethodImpl) {
-        PartialMethodsPool.add(originalLayer, obj, methodName, partialMethodImpl);
+        objs.forEach(obj => PartialMethodsPool.add(originalLayer, obj, methodName, partialMethodImpl));
     }
 
     _installPartialMethodForLayer(layer) {

@@ -76,12 +76,13 @@ function Layer(originalLayer) {
         });
     };
 
-    this.isActive = function() { //This may be used only for debugging
-        return this._active;
-    };
-
     this.addSignal = function(signal) {
         this._cond.addSignal(signal);
+    };
+
+    //This may be used only for debugging
+    this.isActive = function() {
+        return this._active;
     };
 
     //Enable condition for layer
