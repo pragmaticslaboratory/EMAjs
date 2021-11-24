@@ -13,30 +13,30 @@ class PartialMethodsPool {
     }
 
     init() {
-        this._partialMethods = []; //originalLayer x object x methodName x partialMethodImpl
+        this._partialMethods = []; // object x methodName x partialMethodImpl x originalLayer
     }
 
-    add(originalLayer, obj, methodName, partialMethodImpl) {
-        this._partialMethods.push([originalLayer, obj, methodName, partialMethodImpl]);
+    add(obj, methodName, partialMethodImpl, originalLayer) {
+        this._partialMethods.push([obj, methodName, partialMethodImpl, originalLayer]);
     }
 
     _get(layer) {
         return this._partialMethods.filter(function (partialMethod) {
-            let originalLayer = partialMethod[0];
+            let originalLayer = partialMethod[3];
             return layer.__original__ === originalLayer;
         });
     }
 
-    forEachByLayer(layer, fun) {
+    forEachByLayer(layer, fun) { //fun:  obj, methodName, partialMethodImpl, originalLayer
         let partialMethods = this._get(layer);
 
         partialMethods.forEach(function (pm) {
-            let originalLayer = pm[0];
-            let obj = pm[1];
-            let methodName = pm[2];
-            let partialMethodImpl = pm[3];
+            let obj = pm[0];
+            let methodName = pm[1];
+            let partialMethodImpl = pm[2];
+            let originalLayer = pm[3];
 
-            fun(originalLayer, obj, methodName, partialMethodImpl);
+            fun(obj, methodName, partialMethodImpl, originalLayer);
         });
     }
 }

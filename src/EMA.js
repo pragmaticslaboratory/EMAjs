@@ -48,7 +48,7 @@ class EMA {
         objs = Array.isArray(objs)? objs: [objs];
         objs.forEach(obj => {
             OriginalMethodsPool.add(obj, methodName);
-            PartialMethodsPool.add(originalLayer, obj, methodName, partialMethodImpl)
+            PartialMethodsPool.add(obj, methodName, partialMethodImpl, originalLayer)
         });
     }
 
@@ -91,6 +91,7 @@ class EMA {
 
         layer.cleanCondition();
     }
+
 
     ///**** Methods for TESTING *****///
     //only for testing? (can you remove it?)

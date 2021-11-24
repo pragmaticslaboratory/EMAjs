@@ -36,11 +36,11 @@ function Layer(originalLayer) {
     };
 
     this._installPartialMethod = function() {
-        PartialMethodsPool.forEachByLayer(this, function (originalLayer, obj, methodName, partialMethodImpl) {
+        PartialMethodsPool.forEachByLayer(this, function (obj, methodName, partialMethodImpl) {
             obj[methodName] = function () {
                 Layer.proceed = function () {
                     let originalMethod = OriginalMethodsPool.get(obj, methodName);
-                    return originalMethod.apply(obj, arguments);
+                    return OriginalMethodsPool.get(obj, methodName).apply(obj, arguments);
                 };
 
                 //magic!!!!
@@ -55,7 +55,7 @@ function Layer(originalLayer) {
     };
 
     this._uninstallPartialMethods = function() {
-        PartialMethodsPool.forEachByLayer(this, function (originalLayer, obj, methodName) {
+        PartialMethodsPool.forEachByLayer(this, function (obj, methodName) {
             obj[methodName] = OriginalMethodsPool.get(obj, methodName);
         });
     };
