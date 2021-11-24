@@ -14,7 +14,7 @@ let playerView = {
     }
 };
 
-//Creating two adaptations
+//Creating two layers
 let landscape = {
     condition: new SignalComp("gyroLevel > 45"),
     enter: function () {
@@ -34,14 +34,14 @@ let portrait = {
         screen.rotate();
     }
 };
-// End Adaptations
+// End layers
 
 
 EMA.exhibit(screen, {gyroLevel: screen.gyroscope});
 EMA.exhibit(playerView, {kindMovie: playerView.kind});
 EMA.exhibit(landscape, {landscape: landscape.condition});
 
-//Adding two layers
+//Adding two partial layers
 EMA.addPartialMethod(landscape, playerView, "draw", function () {
     show("[LANDSCAPE-LAYER] Lanscape Mode");
     Layer.proceed();

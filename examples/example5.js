@@ -17,7 +17,7 @@ let lights = {
     }
 };
 
-//Adaptation
+//layer
 let houseLight = {
   condition: "isHere == true",
   enter: function() {
@@ -29,8 +29,7 @@ let houseLight = {
 EMA.exhibit(smartPhone,
     {isHere: smartPhone.houseLocation});
 
-EMA.exhibit(car,
-    {isHere: car.parked});
+EMA.exhibit(car, {isHere: car.parked});
 
 EMA.deploy(houseLight);
 

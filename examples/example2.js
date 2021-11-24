@@ -13,7 +13,7 @@ let playerView = {
     }
 };
 
-//adaptation
+//layer
 let landscape = {
     condition: "gyroLevel > 45",
     enter: function () {

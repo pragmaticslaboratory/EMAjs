@@ -12,6 +12,7 @@ let videoCard = {
     }
 };
 
+//layer
 let lowBattery = {
   condition: new SignalComp("level < 30")
 };
