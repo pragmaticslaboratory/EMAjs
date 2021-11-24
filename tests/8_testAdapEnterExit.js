@@ -1,10 +1,10 @@
 let testCase = require('nodeunit').testCase;
 const Signal = require('../src/Signal');
-const CSI = require('../src/EMA');
+const EMA = require('../src/EMA');
 
 module.exports = testCase({
     'setUp': function (test) {
-        CSI.init();
+        EMA.init();
         test();
     },
     'enter_exit-1': function (test) {
@@ -19,14 +19,14 @@ module.exports = testCase({
             },
             condition: "a > 10"
         };
-        CSI.deploy(adap);
+        EMA.deploy(adap);
 
         let obj = {
             x: new Signal(2),
             y: 20
         };
 
-        CSI.exhibit(obj,{a: obj.x});
+        EMA.exhibit(obj,{a: obj.x});
 
         test.deepEqual(flags, []);
         test.done();
@@ -43,12 +43,12 @@ module.exports = testCase({
             condition: "a > 10"
         };
 
-        CSI.deploy(adap);
+        EMA.deploy(adap);
         let obj = {
             x: new Signal(2),
             y: 20
         };
-        CSI.exhibit(obj,{a: obj.x});
+        EMA.exhibit(obj,{a: obj.x});
         obj.x.value = 20;
 
         test.deepEqual(flags, ["enter"]);
@@ -66,12 +66,12 @@ module.exports = testCase({
             condition: "a > 10"
         };
 
-        CSI.deploy(adap);
+        EMA.deploy(adap);
         let obj = {
             x: new Signal(2),
             y: 20
         };
-        CSI.exhibit(obj,{a: obj.x});
+        EMA.exhibit(obj,{a: obj.x});
         obj.x.value = 20;
         obj.x.value = 5;
 
@@ -90,12 +90,12 @@ module.exports = testCase({
             condition: "a > 10"
         };
 
-        CSI.deploy(adap);
+        EMA.deploy(adap);
         let obj = {
             x: new Signal(2),
             y: 20
         };
-        CSI.exhibit(obj,{a: obj.x});
+        EMA.exhibit(obj,{a: obj.x});
         obj.x.value = 20;
         obj.x.value = 1000;
 
@@ -114,12 +114,12 @@ module.exports = testCase({
             condition: "a > 10"
         };
 
-        CSI.deploy(adap);
+        EMA.deploy(adap);
         let obj = {
             x: new Signal(2),
             y: 20
         };
-        CSI.exhibit( obj,{a: obj.x});
+        EMA.exhibit( obj,{a: obj.x});
         obj.x.value = 20;
         obj.x.value = 1;
         obj.x.value = 50;

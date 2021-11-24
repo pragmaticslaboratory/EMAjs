@@ -1,11 +1,11 @@
 let testCase = require('nodeunit').testCase;
 const Signal = require('../src/Signal');
 const SignalComp = require('../src/SignalComp');
-const CSI = require('../src/EMA');
+const EMA = require('../src/EMA');
 
 module.exports = testCase({
     'setUp': function (test) {
-        CSI.init();
+        EMA.init();
         test();
     },
     'two-activations': function (test) {
@@ -22,10 +22,10 @@ module.exports = testCase({
             condition: new SignalComp("h")
         };
 
-        CSI.deploy(adap1);
-        CSI.deploy(adap2);
-        CSI.exhibit(obj,{a: obj.x});
-        CSI.exhibit(adap1,{pp: adap1.condition});
+        EMA.deploy(adap1);
+        EMA.deploy(adap2);
+        EMA.exhibit(obj,{a: obj.x});
+        EMA.exhibit(adap1,{pp: adap1.condition});
 
         test.ok("creating and deploying adaptations");
 
@@ -52,10 +52,10 @@ module.exports = testCase({
             }
         };
 
-        CSI.deploy(adap1);
-        CSI.deploy(adap2);
-        CSI.exhibit(obj,{a: obj.x});
-        CSI.exhibit(adap1,{h: adap1.condition});
+        EMA.deploy(adap1);
+        EMA.deploy(adap2);
+        EMA.exhibit(obj,{a: obj.x});
+        EMA.exhibit(adap1,{h: adap1.condition});
         obj.x.value = 10;
         test.deepEqual(flags, ["enter-adap1","enter-adap2"]);
 
@@ -89,13 +89,13 @@ module.exports = testCase({
             }
         };
 
-        CSI.deploy(adap1);
-        CSI.deploy(adap2);
-        CSI.deploy(adap3);
+        EMA.deploy(adap1);
+        EMA.deploy(adap2);
+        EMA.deploy(adap3);
 
-        CSI.exhibit(obj,{a: obj.x, b: obj.y});
-        CSI.exhibit(adap1,{h: adap1.condition});
-        CSI.exhibit(adap2,{r: adap2.condition});
+        EMA.exhibit(obj,{a: obj.x, b: obj.y});
+        EMA.exhibit(adap1,{h: adap1.condition});
+        EMA.exhibit(adap2,{r: adap2.condition});
         obj.x.value = 10;
         obj.y.value = 100;
         test.deepEqual(flags, ["enter-adap1","enter-adap2","enter-adap3"]);
@@ -139,13 +139,13 @@ module.exports = testCase({
             }
         };
 
-        CSI.deploy(adap1);
-        CSI.deploy(adap2);
-        CSI.deploy(adap3);
+        EMA.deploy(adap1);
+        EMA.deploy(adap2);
+        EMA.deploy(adap3);
 
-        CSI.exhibit(obj,{a: obj.x, b: obj.y});
-        CSI.exhibit(adap1,{h: adap1.condition});
-        CSI.exhibit(adap2,{r: adap2.condition});
+        EMA.exhibit(obj,{a: obj.x, b: obj.y});
+        EMA.exhibit(adap1,{h: adap1.condition});
+        EMA.exhibit(adap2,{r: adap2.condition});
         obj.x.value = 10;
         obj.y.value = 100;
         obj.x.value = -1;
@@ -190,12 +190,12 @@ module.exports = testCase({
             }
         };
 
-        CSI.exhibit(obj,{a: obj.x, b: obj.y});
-        CSI.exhibit(adap1,{h: adap1.condition});
-        CSI.exhibit(adap2,{r: adap2.condition});
-        CSI.deploy(adap1);
-        CSI.deploy(adap2);
-        CSI.deploy(adap3);
+        EMA.exhibit(obj,{a: obj.x, b: obj.y});
+        EMA.exhibit(adap1,{h: adap1.condition});
+        EMA.exhibit(adap2,{r: adap2.condition});
+        EMA.deploy(adap1);
+        EMA.deploy(adap2);
+        EMA.deploy(adap3);
 
         obj.x.value = 10;
         obj.y.value = 100;
@@ -232,10 +232,10 @@ module.exports = testCase({
             }
         };
 
-        CSI.exhibit(obj,{a: obj.x, b: obj.y, c: obj.z});
-        CSI.exhibit(adap2,{adap2: adap2.condition});
-        CSI.deploy(adap1);
-        CSI.deploy(adap2);
+        EMA.exhibit(obj,{a: obj.x, b: obj.y, c: obj.z});
+        EMA.exhibit(adap2,{adap2: adap2.condition});
+        EMA.deploy(adap1);
+        EMA.deploy(adap2);
 
         obj.x.value = 10;
         obj.y.value = 100;

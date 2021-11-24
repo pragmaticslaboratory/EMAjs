@@ -27,8 +27,8 @@ class PartialMethodsPool {
         });
     }
 
-    forEachByLayer(layer, fun) { //fun:  obj, methodName, partialMethodImpl, originalLayer
-        let partialMethods = this._get(layer);
+    forEachByLayer(deployedLayer, fun) { //fun:  obj, methodName, partialMethodImpl, originalLayer
+        let partialMethods = this._get(deployedLayer);
 
         partialMethods.forEach(function (pm) {
             let obj = pm[0];

@@ -1,6 +1,6 @@
-let Layer = require('./Layer');
-let PartialMethodsPool = require('./PartialMethodsPool');
-let OriginalMethodsPool = require('./OriginalMethodsPool');
+const Layer = require('./Layer');
+const PartialMethodsPool = require('./PartialMethodsPool');
+const OriginalMethodsPool = require('./OriginalMethodsPool');
 
 class EMA {
 

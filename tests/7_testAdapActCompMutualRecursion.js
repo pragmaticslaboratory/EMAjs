@@ -1,11 +1,11 @@
 let testCase = require('nodeunit').testCase;
 const Signal = require('../src/Signal');
 const SignalComp = require('../src/SignalComp');
-const CSI = require('../src/EMA');
+const EMA = require('../src/EMA');
 
 module.exports = testCase({
     'setUp': function (test) {
-        CSI.init();
+        EMA.init();
         test();
     },
     'mutual-recursion-1': function (test) {
@@ -22,9 +22,9 @@ module.exports = testCase({
             }
         };
 
-        CSI.exhibit([adap1, adap2], {a: x});
-        CSI.deploy(adap1);
-        CSI.deploy(adap2);
+        EMA.exhibit([adap1, adap2], {a: x});
+        EMA.deploy(adap1);
+        EMA.deploy(adap2);
         x.value = 9;
         test.deepEqual(flags, ["adap2", "adap1"]);
 
@@ -44,12 +44,12 @@ module.exports = testCase({
             }
         };
 
-        CSI.exhibit([], {a: x});
-        CSI.exhibit(adap1, {r: adap1.condition});
-        CSI.exhibit(adap2, {h: adap2.condition});
+        EMA.exhibit([], {a: x});
+        EMA.exhibit(adap1, {r: adap1.condition});
+        EMA.exhibit(adap2, {h: adap2.condition});
 
-        CSI.deploy(adap1);
-        CSI.deploy(adap2);
+        EMA.deploy(adap1);
+        EMA.deploy(adap2);
         x.value = 9;
         test.deepEqual(flags, ["adap1", "adap2"]);
 
