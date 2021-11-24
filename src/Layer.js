@@ -43,9 +43,15 @@ function Layer(originalLayer) {
                     return Layer._executeOriginalMethod(obj, methodName, arguments);
                 };
 
-                let result = partialMethodImpl.apply(obj, arguments);
-                Layer.proceed = undefined;
+                let args = arguments;
+                let result = function() {
+                    //Comienzo  magia de Nicolas con scope (if)
+                    let res = partialMethodImpl.apply(obj, args);
+                    //final magia de Nicolas con scope
+                    return res;
+                }();
 
+                Layer.proceed = undefined;
                 return result;
             };
         });

@@ -1,10 +1,10 @@
 
-function expressionInterpreter(expresion, contextObj) {
+function expressionInterpreter(expression, contextObj) {
     let result;
 
     try {
         with (contextObj) {
-            result = eval(expresion);
+            result = eval(expression);
         }
     } catch (error) {
         if (error instanceof ReferenceError) {
