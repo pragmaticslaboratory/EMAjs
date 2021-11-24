@@ -34,7 +34,7 @@ class EMA {
                 layer._uninstallPartialMethods();
                 return false;
             }
-            return true;
+            return true; // not removing layer
         });
     }
 
