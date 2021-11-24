@@ -37,7 +37,7 @@ class EMA {
     }
 
     exhibit(object, signalInterface) {
-        this._addSignalInterface(object, signalInterface);
+        this._signalInterfacePool.push([object, signalInterface]);
         this._addIdSignal(signalInterface);
         this._exhibitAnInterface(signalInterface);
     }
@@ -58,10 +58,6 @@ class EMA {
                 }
             }
         });
-    }
-
-    _addSignalInterface(object, signalInterface) {
-        this._signalInterfacePool.push([object, signalInterface]);
     }
 
     _addIdSignal(signalInterface) {
