@@ -10,7 +10,7 @@ function Room(name, appliances = []) {
         this.users = Math.max(0, this.users - 1);
     }
     this.getAppliance = function(name) {
-        return this.appliances.filter( app => app.name == name)[0];
+        return this.appliances.filter( app => app.name === name)[0];
     }
     this.playSound = function() {
         this.appliances.forEach( a => {
