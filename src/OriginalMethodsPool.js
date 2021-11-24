@@ -12,7 +12,7 @@ class OriginalMethodsPool {
     }
 
     init() {
-        this._originalMethods = []; //object x methodName x original_method
+        this._originalMethods = []; //object x methodName x originalMethodImpl
     }
 
 

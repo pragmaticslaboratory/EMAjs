@@ -40,11 +40,8 @@ function Layer(originalLayer) {
             obj[methodName] = function () {
                 Layer.proceed = function () {
                     let originalMethod = OriginalMethodsPool.get(obj, methodName);
-                    return OriginalMethodsPool.get(obj, methodName).apply(obj, arguments);
+                    return originalMethod.apply(obj, arguments);
                 };
-
-                //magic!!!!
-                Object.defineProperty(arguments.callee,"name",{get:function() {return methodName;}});
 
                 let result = partialMethodImpl.apply(obj, arguments);
                 Layer.proceed = undefined;

@@ -1,12 +1,12 @@
 let testCase = require('nodeunit').testCase;
 const Signal = require('../src/Signal');
 const SignalComp = require('../src/SignalComp');
-const Adaptation = require('../src/Layer');
-const CSI = require('../src/EMA');
+const Layer = require('../src/Layer');
+const EMA = require('../src/EMA');
 
 module.exports = testCase({
     'setUp': function (test) {
-        CSI.init();
+        EMA.init();
         test();
     },
     'create': function (test) {
@@ -22,11 +22,11 @@ module.exports = testCase({
             condition: "a > 1"
         };
 
-        CSI.exhibit(obj, {a: obj.x});
-        CSI.addPartialMethod(adap, obj, "m", function () {
+        EMA.exhibit(obj, {a: obj.x});
+        EMA.addPartialMethod(adap, obj, "m", function () {
             flags.push("variation")
         });
-        CSI.deploy(adap);
+        EMA.deploy(adap);
         obj.m();
         test.deepEqual(flags, ["variation"]);
 
@@ -45,13 +45,13 @@ module.exports = testCase({
             condition: new SignalComp("a > 1")
         };
 
-        CSI.exhibit(obj, {a: obj.x});
-        CSI.addPartialMethod(adap, obj, "m", function () {
+        EMA.exhibit(obj, {a: obj.x});
+        EMA.addPartialMethod(adap, obj, "m", function () {
             flags.push("variation");
         });
         obj.m();
 
-        CSI.deploy(adap); //later deployment
+        EMA.deploy(adap); //later deployment
         test.deepEqual(flags, ["original"]);
 
         test.done();
@@ -69,11 +69,11 @@ module.exports = testCase({
             condition: new SignalComp("a > 1")
         };
 
-        CSI.exhibit(obj, {a: obj.x});
-        CSI.addPartialMethod(adap, obj, "m", function () {
+        EMA.exhibit(obj, {a: obj.x});
+        EMA.addPartialMethod(adap, obj, "m", function () {
             flags.push("variation");
         });
-        CSI.deploy(adap);
+        EMA.deploy(adap);
         obj.x.value = 10;
         obj.m();
         test.deepEqual(flags, ["variation"]);
@@ -94,11 +94,11 @@ module.exports = testCase({
         };
 
         obj.x.value = 10;
-        CSI.exhibit(obj, {a: obj.x});
-        CSI.addPartialMethod(adap, obj, "m", function () {
+        EMA.exhibit(obj, {a: obj.x});
+        EMA.addPartialMethod(adap, obj, "m", function () {
             flags.push("variation");
         });
-        CSI.deploy(adap);
+        EMA.deploy(adap);
         obj.m();
         test.deepEqual(flags, ["variation"]);
 
@@ -118,12 +118,12 @@ module.exports = testCase({
         };
 
         obj.x.value = 10;
-        CSI.exhibit(obj, {a: obj.x});
-        CSI.addPartialMethod(adap, obj, "m", function () {
+        EMA.exhibit(obj, {a: obj.x});
+        EMA.addPartialMethod(adap, obj, "m", function () {
             flags.push("variation");
         });
         obj.m();
-        CSI.deploy(adap);
+        EMA.deploy(adap);
         test.deepEqual(flags, ["original"]);
 
         test.done();
@@ -142,11 +142,11 @@ module.exports = testCase({
         };
 
         obj.x.value = 10;
-        CSI.exhibit(obj, {a: obj.x});
-        CSI.addPartialMethod(adap, obj, "m", function () {
+        EMA.exhibit(obj, {a: obj.x});
+        EMA.addPartialMethod(adap, obj, "m", function () {
             flags.push("variation")
         });
-        CSI.deploy(adap);
+        EMA.deploy(adap);
 
         obj.m();
         obj.x.value = 0;
@@ -170,12 +170,12 @@ module.exports = testCase({
         };
 
         obj.x.value = 10;
-        CSI.exhibit(obj, {a: obj.x});
-        CSI.addPartialMethod(adap, obj, "m", function () {
+        EMA.exhibit(obj, {a: obj.x});
+        EMA.addPartialMethod(adap, obj, "m", function () {
             flags.push("variation");
-            Adaptation.proceed();
+            Layer.proceed();
         });
-        CSI.deploy(adap);
+        EMA.deploy(adap);
         obj.m();
         test.deepEqual(flags, ["variation", "original"]);
 
@@ -195,12 +195,12 @@ module.exports = testCase({
         };
 
         obj.x.value = 10;
-        CSI.exhibit(obj, {a: obj.x});
-        CSI.addPartialMethod(adap, obj, "m", function () {
+        EMA.exhibit(obj, {a: obj.x});
+        EMA.addPartialMethod(adap, obj, "m", function () {
             return "variation";
         });
         flags.push(obj.m());
-        CSI.deploy(adap);
+        EMA.deploy(adap);
         flags.push(obj.m());
         test.deepEqual(flags, ["original", "variation"]);
 
@@ -220,12 +220,12 @@ module.exports = testCase({
         };
 
         obj.x.value = 10;
-        CSI.exhibit(obj, {a: obj.x});
-        CSI.addPartialMethod(adap, obj, "m", function () {
-            return "variation" + "-" + Adaptation.proceed();
+        EMA.exhibit(obj, {a: obj.x});
+        EMA.addPartialMethod(adap, obj, "m", function () {
+            return "variation" + "-" + Layer.proceed();
         });
         flags.push(obj.m());
-        CSI.deploy(adap);
+        EMA.deploy(adap);
         flags.push(obj.m());
         test.deepEqual(flags, ["original", "variation-original"]);
 
@@ -245,12 +245,12 @@ module.exports = testCase({
         };
 
         obj.x.value = 10;
-        CSI.exhibit(obj, {a: obj.x});
-        CSI.addPartialMethod(adap, obj, "m", function () {
-            return "variation" + "-" + Adaptation.proceed();
+        EMA.exhibit(obj, {a: obj.x});
+        EMA.addPartialMethod(adap, obj, "m", function () {
+            return "variation" + "-" + Layer.proceed();
         });
         flags.push(obj.m());
-        CSI.deploy(adap);
+        EMA.deploy(adap);
         flags.push(obj.m());
         obj.x.value = 0;
         flags.push(obj.m());
