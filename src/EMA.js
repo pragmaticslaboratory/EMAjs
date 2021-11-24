@@ -46,7 +46,7 @@ class EMA {
         objs = Array.isArray(objs)? objs: [objs];
         objs.forEach(obj => {
             OriginalMethodsPool.add(obj, methodName);
-            PartialMethodsPool.add(obj, methodName, partialMethodImpl, originalLayer)
+            PartialMethodsPool.add(obj, methodName, partialMethodImpl, originalLayer);
         });
     }
 
