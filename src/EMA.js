@@ -1,4 +1,6 @@
 let Layer = require('./Layer');
+let PartialMethodsPool = require('./PartialMethodsPool');
+let OriginalMethodsPool = require('./OriginalMethodsPool');
 
 class EMA {
 
@@ -11,53 +13,28 @@ class EMA {
     }
 
     init() {
-        this._layers = []; //only layers
+        this._deployedLayers = []; //only deployed layers
         this._signalInterfacePool = []; //objects x interface-object
-        this._variations = []; //originalLayer x object x methodName x variation
-        this._originalMethods = []; //object x name x original_method
     }
 
     deploy(originalLayer) {
         let layer = new Layer(originalLayer);
-        layer._name = layer._name !== "_" ? layer._name : "Layer_" + (this._layers.length + 1);
+        layer._name = layer._name !== "_" ? layer._name : "Layer_" + (this._deployedLayers.length + 1);
 
-        this._layers.push(layer);
-        this._addSavedLayers(layer);
+        this._deployedLayers.push(layer);
+        this._installPartialMethodForLayer(layer);
 
         //it is to know if signals are already send data
         this._receiveSignalsForSignalInterfaces(layer);
     }
 
     undeploy(originalLayer) {
-        this._uninstallVariations(originalLayer);
+        this._uninstallPartialMethods(originalLayer);
         this._cleanSignalComposition(originalLayer);
 
-        this._layers = this._layers.filter(function (layer) {
+        //remove layer
+        this._deployedLayers = this._deployedLayers.filter(function (layer) {
             return layer.__original__ !== originalLayer;
-        });
-    }
-
-    _addSavedLayers(layer) {
-        let variations = this._variations.filter(function (variation) {
-            return layer.__original__ === variation[0];
-        });
-        var thiz = this;
-        variations.forEach(function (variation) {
-            let obj = variation[1];
-            let methodName = variation[2];
-            let variationMethod = variation[3];
-
-            thiz._addOriginalMethod(obj, methodName);
-            let originalMethod = thiz._getOriginalMethod(obj, methodName);
-            layer.addVariation(obj, methodName, variationMethod, originalMethod);
-        });
-    }
-
-    _uninstallVariations(originalLayer) {
-        this._layers.forEach(function (layer) {
-            if (layer.__original__ === originalLayer) {
-                layer._uninstallVariations();
-            }
         });
     }
 
@@ -67,13 +44,27 @@ class EMA {
         this._exhibitAnInterface(signalInterface);
     }
 
-    addPartialMethod(originalLayer, objs, methodName, variation) {
+    addPartialMethod(originalLayer, objs, methodName, partialMethodImpl) {
         objs = Array.isArray(objs)? objs: [objs];
-        objs.forEach(obj => this._addPartialMethod(originalLayer, obj, methodName, variation));
+        objs.forEach(obj => this._addPartialMethod(originalLayer, obj, methodName, partialMethodImpl));
     }
 
-    _addPartialMethod(originalLayer, obj, methodName, variation) {
-        this._variations.push([originalLayer, obj, methodName, variation]);
+    _addPartialMethod(originalLayer, obj, methodName, partialMethodImpl) {
+        PartialMethodsPool.add(originalLayer, obj, methodName, partialMethodImpl);
+    }
+
+    _installPartialMethodForLayer(layer) {
+        PartialMethodsPool.forEachByLayer(layer, function (originalLayer, obj, methodName) {
+            OriginalMethodsPool.add(obj, methodName);
+        });
+    }
+
+    _uninstallPartialMethods(originalLayer) {
+        this._deployedLayers.forEach(function (layer) {
+            if (layer.__original__ === originalLayer) {
+                layer._uninstallPartialMethods();
+            }
+        });
     }
 
     _receiveSignalsForSignalInterfaces(layer) {
@@ -101,64 +92,44 @@ class EMA {
     _exhibitAnInterface(signalInterface) {
         for (let field in signalInterface) {
             if (signalInterface.hasOwnProperty(field)) {
-
-                this._layers.forEach(function (layer) {
+                this._deployedLayers.forEach(function (layer) {
                     layer.addSignal(signalInterface[field]);
                 });
             }
         }
     }
 
-    _addOriginalMethod(obj, methodName) {
-        let originalMethod = this._getOriginalMethod(obj, methodName);
-
-        if (originalMethod === undefined) {
-            this._originalMethods.push([obj, methodName, obj[methodName]]);
-        }
-    }
-
-    _getOriginalMethod(obj, methodName) {
-        let found = this._originalMethods.find(function (tuple) {
-            return obj === tuple[0] && methodName === tuple[1];
-        });
-
-        return found === undefined? undefined: found[2];
-    }
-
-    getLayers(filter) {
-        filter = filter || function () {
-            return true;
-        };
-        return this._layers.filter(filter);
-    }
-
-    getActiveLayers() {
-        return this.getLayers(function (layer) {
-            return layer.isActive()
-        })
-    };
-
     _cleanSignalComposition(originalLayer) {
-        let layer = this._layers.find(function (layer) {
+        let layer = this._deployedLayers.find(function (layer) {
             return layer.__original__ === originalLayer;
         });
 
         layer.cleanCondition();
     }
 
-    //only for debugging
+    ///**** Methods for TESTING *****///
+
+    //only for testing? (can you remove it?)
+    getLayers(filter) {
+        filter = filter || function () {
+            return true;
+        };
+        return this._deployedLayers.filter(filter);
+    }
+
+    //only for testing? (can you remove it?)
+    getActiveLayers() {
+        return this.getLayers(function (layer) {
+            return layer.isActive()
+        })
+    };
+
+    //only for testing? (can you remove it?)
     getInactiveLayers() {
         return this.getLayers(function (layer) {
             return !layer.isActive()
         })
     };
-
-    //only for debugging
-    _removingLayers(originalLayer) {
-        this._variations = this._variations.filter(function (variation) {
-            return originalLayer !== variation[0];
-        });
-    }
 }
 
 module.exports = new EMA();

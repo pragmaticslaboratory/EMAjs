@@ -1,25 +1,59 @@
 let {Signal, SignalComp, Layer, EMA, show} = require("../loader");
 
-let t = new Signal(0, "t");
-//let h = new Signal(0, "h");
+let screen = {
+    gyroscope: new Signal(0),
+    rotate: function () {
+        show("Rotating");
+    }
+};
 
-let ht = new SignalComp("t > 10", [t], "ht");
-//let hh = new SignalComp("h > 50", [h], "hh");
+let playerView = {
+    draw: function () {
+        show("Showing a Movie");
+    }
+};
 
-let hto = new SignalComp("hto || ht", [ht], "hto");
-//hto.addSignal(hto);
+//this videoGame does not support landscape
+let videoGame = {
+  draw: function() {
+      show("Showing a Video Game");
+  }
+};
 
-t.value = 15;
+//adaptation
+let landscape = {
+    condition: "gyroLevel > 45",
+    enter: function () {
+        console.log("ENTER TRANSITION");
+        screen.rotate();
+    },
+    scope: function(funName, obj) {
+        return !(funName === "draw" && obj === videoGame);
+    }
+};
 
-console.log(t.value);
-console.log(ht.value);
-console.log(hto.value);
-console.log("\n");
-t.value = 8;
 
-console.log(t.value);
-console.log(ht.value);
-console.log(hto.value);
+EMA.exhibit(screen, {gyroLevel: screen.gyroscope});
 
+EMA.addPartialMethod(landscape, playerView, "draw",
+    function () {
+        show("[LAYER] Landscape Mode");
+        Layer.proceed();
 
+    }
+);
 
+EMA.addPartialMethod(landscape, videoGame, "draw",
+    function () {
+        show("[LAYER] Landscape Mode");
+        Layer.proceed();
+    }
+);
+
+EMA.deploy(landscape);
+playerView.draw();
+
+show("\nChange SmartPhone position");
+screen.gyroscope.value = 60;
+playerView.draw();
+videoGame.draw();

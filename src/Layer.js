@@ -1,7 +1,21 @@
 const SignalComp = require('./SignalComp');
+const PartialMethodsPool = require('./PartialMethodsPool');
+const OriginalMethodsPool = require('./OriginalMethodsPool');
 
 
 function Layer(originalLayer) {
+
+    this._cond = originalLayer.condition === undefined ?
+        new SignalComp("false") : typeof (originalLayer.condition) === "string" ?
+            new SignalComp(originalLayer.condition) : originalLayer.condition; //it should be already a signal composition
+
+    this._enter = originalLayer.enter || function () {};
+    this._exit = originalLayer.exit || function () {};
+
+    this._active = false;
+    this._name = originalLayer.name || "_";
+    this.__original__ = originalLayer;
+
     Object.defineProperty(this,'name', {
         set: function(name) {
             this._name = name;
@@ -21,26 +35,18 @@ function Layer(originalLayer) {
         this._cond = new SignalComp(this._cond.expression);
     };
 
-    this.addVariation = function(obj, methodName, variation, originalMethod) {
-        this._variations.push([obj, methodName, variation, originalMethod]);
-    };
-
-    this._installVariations = function() {
-        let thiz = this;
-        this._variations.forEach(function (variation) {
-            let obj = variation[0];
-            let methodName = variation[1];
-            let variationMethod = variation[2];
-            let originalMethod = variation[3];
-
+    this._installPartialMethod = function() {
+        PartialMethodsPool.forEachByLayer(this, function (originalLayer, obj, methodName, partialMethodImpl) {
             obj[methodName] = function () {
                 Layer.proceed = function () {
+                    let originalMethod = OriginalMethodsPool.get(obj, methodName);
                     return originalMethod.apply(obj, arguments);
                 };
 
                 //magic!!!!
                 Object.defineProperty(arguments.callee,"name",{get:function() {return methodName;}});
-                let result = variationMethod.apply(obj, arguments);
+
+                let result = partialMethodImpl.apply(obj, arguments);
                 Layer.proceed = undefined;
 
                 return result;
@@ -48,12 +54,9 @@ function Layer(originalLayer) {
         });
     };
 
-    this._uninstallVariations = function() {
-        this._variations.forEach(function (variation) {
-            let obj = variation[0];
-            let methodName = variation[1];
-            let originalMethod = variation[3];
-            obj[methodName] = originalMethod;
+    this._uninstallPartialMethods = function() {
+        PartialMethodsPool.forEachByLayer(this, function (originalLayer, obj, methodName) {
+            obj[methodName] = OriginalMethodsPool.get(obj, methodName);
         });
     };
 
@@ -64,10 +67,10 @@ function Layer(originalLayer) {
                 thiz._active = active;
                 if (thiz._active) {
                     thiz._enter();
-                    thiz._installVariations();
+                    thiz._installPartialMethod();
                 } else {
                     thiz._exit();
-                    thiz._uninstallVariations();
+                    thiz._uninstallPartialMethods();
                 }
             }
         });
@@ -81,18 +84,7 @@ function Layer(originalLayer) {
         this._cond.addSignal(signal);
     };
 
-    this._cond = originalLayer.condition === undefined ?
-        new SignalComp("false") : typeof (originalLayer.condition) === "string" ?
-            new SignalComp(originalLayer.condition) : originalLayer.condition; //it should be already a signal composition
-
-    this._enter = originalLayer.enter || function () {};
-    this._exit = originalLayer.exit || function () {};
-
-    this._active = false;
-    this._name = originalLayer.name || "_";
-    this.__original__ = originalLayer;
-
-    this._variations = [];
+    //Enable condition for layer
     this.enableCondition();
 }
 
