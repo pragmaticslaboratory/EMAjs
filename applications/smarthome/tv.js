@@ -1,23 +1,23 @@
 const Appliance = require("./appliance")
 
 function TV(name, room) {
-    this.name = name
-    this.state = 0
-    this.volume = 0
-    this.location = room
-    this.display = "off"
+    this.name = name;
+    this.state = 0;
+    this.volume = 0;
+    this.location = room;
+    this.display = "off";
     this._switch = function () {
-        this.state = !this.state
+        this.state = !this.state;
     }
     this.setVolume = function (level) {
-        this.volume = level
+        this.volume = level;
     }
     this.setLocation = function (location) {
-        this.location = location
+        this.location = location;
     }
     this.turnOn = function () {
         this.display = "on";
-        this._switch();
+        this.switch();
     }
     this.turnOff = function () {
         this.display = "off";
@@ -26,7 +26,7 @@ function TV(name, room) {
     this.playSound = function (message) {
         let tempVolume = this.volume;
         if (!this.state) {
-            if (tempVolume === 0)  this.setVolume(60);
+            if (tempVolume === 0) this.setVolume(60);
             console.log(`${message} output on ${this.location}'s ${this.name} at ${this.volume}% volume`)
             this.setVolume(tempVolume);
         } else {
@@ -35,5 +35,7 @@ function TV(name, room) {
         }
     }
 }
+
+TV.prototype = Object.create(Appliance.prototype);
 
 module.exports = TV;
