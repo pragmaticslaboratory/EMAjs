@@ -22,19 +22,19 @@ class EMA {
         layer._name = layer._name !== "_" ? layer._name : "Layer_" + (this._deployedLayers.length + 1);
 
         this._deployedLayers.push(layer);
-        this._installPartialMethodForLayer(layer);
-
-        //it is to know if signals are already send data
         this._receiveSignalsForSignalInterfaces(layer);
     }
 
     undeploy(originalLayer) {
-        this._uninstallPartialMethods(originalLayer);
         this._cleanSignalComposition(originalLayer);
 
-        //remove layer
+        //uninstalling partial methods & removing layers
         this._deployedLayers = this._deployedLayers.filter(function (layer) {
-            return layer.__original__ !== originalLayer;
+            if (layer.__original__ === originalLayer) {
+                layer._uninstallPartialMethods();
+                return false;
+            }
+            return true;
         });
     }
 
@@ -46,24 +46,13 @@ class EMA {
 
     addPartialMethod(originalLayer, objs, methodName, partialMethodImpl) {
         objs = Array.isArray(objs)? objs: [objs];
-        objs.forEach(obj => PartialMethodsPool.add(originalLayer, obj, methodName, partialMethodImpl));
-    }
-
-    _installPartialMethodForLayer(layer) {
-        PartialMethodsPool.forEachByLayer(layer, function (originalLayer, obj, methodName) {
+        objs.forEach(obj => {
             OriginalMethodsPool.add(obj, methodName);
+            PartialMethodsPool.add(originalLayer, obj, methodName, partialMethodImpl)
         });
     }
 
-    _uninstallPartialMethods(originalLayer) {
-        this._deployedLayers.forEach(function (layer) {
-            if (layer.__original__ === originalLayer) {
-                layer._uninstallPartialMethods();
-            }
-        });
-    }
-
-    _receiveSignalsForSignalInterfaces(layer) {
+    _receiveSignalsForSignalInterfaces(layer) {    //it is to know if signals are already send data
         this._signalInterfacePool.forEach(function (si) {
             for (let field in si[1]) {
                 if (si[1].hasOwnProperty(field)) {
@@ -104,7 +93,6 @@ class EMA {
     }
 
     ///**** Methods for TESTING *****///
-
     //only for testing? (can you remove it?)
     getLayers(filter) {
         filter = filter || function () {
