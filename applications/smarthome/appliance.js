@@ -1,41 +1,50 @@
-const {InUse} = require("./appliance");
-
 function Appliance(name, location, volume = 0) {
     this.name = name;
     this.state = 0;
     this.volume = Math.min(volume, 100);
     this.location = location;
-    //console.log(this)
-}
-
-Appliance.prototype.switch = function() {
-        this.state = !this.state
+    this.strategy;
+    this.switch = function () {
+        this.state = !this.state;
+        this.setStrategy();
     }
-
-Appliance.prototype.setVolume = function(level) {
+    this.setStrategy = function() {
+        this.strategy = this.state == 0 ? new FreeStrategy(this) :  new InUseStrategy(this);
+    }
+    this.setVolume = function (level) {
         this.volume = level;
-}
-
-Appliance.prototype.setLocation = function(roomName) {
+    }
+    this.setLocation = function (roomName) {
         this.location = roomName;
+    }
+    this.playSound = function(message) {
+        this.strategy.playSound(message);
+    }
 }
 
-Appliance.prototype.playSound = function(message) {
-    //Appliance not in use, play sound
-    let tempVolume = this.volume;
-    if (tempVolume === 0) this.setVolume(60);
-    console.log(`${message} output on ${this.location}'s ${this.name} at ${this.volume}% volume`)
-    this.setVolume(tempVolume);
+function FreeStrategy(p) {
+    Appliance.call(p.name, p.location, p.volume);
+    this.playSound = function(message) {
+        let tempVolume = p.volume;
+        if (tempVolume === 0) p.setVolume(60);
+        let display  = p.state > 0 ? "on" : "off";
+        console.log(`${p.location}'s ${p.name} is ${display}!!`)
+        console.log(`${message} output on ${p.location}'s ${p.name} at ${p.volume}% volume`)
+        p.setVolume(tempVolume);
+    }
 }
+FreeStrategy.prototype = new Appliance;
 
-let InUse = function() {};
-InUse.prototype = Object.create(Appliance.prototype);
-InUse.prototype.playSound = function(message) {
-    console.log(`No ${message} to display as ${this.name} is ${this.display}`)
+
+function InUseStrategy(p) {
+    Appliance.call(p.name, p.location, p.volume);
+    this.playSound = function(message) {
+        let display  = p.state > 0 ? "on" : "off";
+        console.log(`No ${message} to ${p.name} as it is ${display}. Now displaying the message`);
+    }
 }
+InUseStrategy.prototype = new Appliance;
 
 
-module.exports = {
-    BaseAppliance: Appliance,
-    InUseAppliance: InUse
-}
+
+module.exports = Appliance
