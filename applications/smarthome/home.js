@@ -1,12 +1,16 @@
 const Room = require("./room");
 const Appliance = require("./appliance");
-const TV = require("./tv");
+//const TV = require("./tv");
 
 function _createDevices() {
     let doorChime = new Appliance("chime", "hall", true, 100);
-    let tv = new TV("tv", "bedroom");
+    doorChime.setStrategy();
+    let tv = new Appliance("tv", "bedroom");
+    tv.setStrategy();
     let soundBar = new Appliance("Sound Bar", "Living Room");
+    soundBar.setStrategy();
     let radio = new Appliance("Radio", "Kitchcen");
+    radio.setStrategy();
     return [doorChime, tv, soundBar, radio];
 }
 
