@@ -26,17 +26,38 @@ function _createRooms() {
 
 function Home() {
     this.rooms = _createRooms();
-    this.addRoom = function() {
-        let r = new Room();
+    this.strategy = null;
+    this.addRoom = function(name, appliances) {
+        let r = new Room(name, appliances);
         this.rooms.push(r);
-    } 
+    };
     this.doorBell = function() {
-        console.log("Silent door ring");
-        this.rooms.forEach(r => {
-            if(r.users) //Advertice condition
-                r.playSound();
-        })
+        if(this.strategy)
+            this.strategy.doorbell();
+    };
+    this.setStrategy = function(status) {
+        this.strategy = status === "free" ? new SilentStrategy(this) : new SoundStrategy(this);
     }
 }
+
+function SilentStrategy(home) {
+    Home.call();
+    this.doorbell = function() {
+        console.log("Just door ring");
+    }
+}
+SilentStrategy.prototype = new Home;
+
+function SoundStrategy(home) {
+    Home.call();
+    this.doorbell = function() {
+        console.log("Door ring + ");
+        home.rooms.forEach(r => {
+            if(r.users) //Advertice condition
+                r.playSound();
+        });
+    }
+}
+SoundStrategy.prototype = new Home;
 
 module.exports = Home

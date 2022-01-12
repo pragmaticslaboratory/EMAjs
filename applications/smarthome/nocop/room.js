@@ -28,7 +28,7 @@ function OccupiedRoomStrategy(p) {
     this.playSound = function() {
         p.appliances.forEach(a => {
             a.playSound("Advertise");
-            console.log(`ring alarm  ${this.name} on: ${a.name}`);
+            console.log(`ring ${p.name} alarm on: ${a.name}`);
         })
     }
 }
