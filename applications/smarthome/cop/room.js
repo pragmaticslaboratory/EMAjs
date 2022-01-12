@@ -15,9 +15,9 @@ function Room(name, appliances = []) {
     };
     this.checkState = function() {
         if(this.users === 0)
-            EMA.undeploy(Layers.InhabitedLayer);
+            Layers.InhabitedLayer.deactivate();
         else
-            EMA.deploy(Layers.InhabitedLayer);
+            Layers.InhabitedLayer.activate();
     };
     this.getAppliance = function(name) {
         return this.appliances.filter( app => app.name === name)[0];

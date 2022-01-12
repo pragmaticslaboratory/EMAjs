@@ -9,9 +9,9 @@ function Appliance(name, location, volume = 0) {
     this.switch = function () {
         this.state = !this.state;
         if(this.state == 0)
-            EMA.undeploy(Layers.InUseLayer)
+            Layers.InUseLayer.activate();
         else
-            EMA.deploy(Layers.InUseLayer);
+            Layers.InUseLayer.deactivate();
     }
 
     this.setVolume = function (level) {

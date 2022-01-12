@@ -32,7 +32,7 @@ function Home() {
     };
 }
 
-EMA.addPartialMethod(Layers.InhabitedLayer, Home, "doorbell",
+EMA.addPartialMethod(Layers.InhabitedLayer, Home, "doorBell",
     function() {
         console.log("Door ring + ");
         home.rooms.forEach(r => {

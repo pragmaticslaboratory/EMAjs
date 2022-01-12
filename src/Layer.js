@@ -95,6 +95,20 @@ function Layer(originalLayer) {
         return this._active;
     };
 
+    //method for testing
+    this.activate = function() {
+        this._active = true;
+        this._enter();
+        this._installPartialMethod();
+    }
+
+    //method for testing
+    this.deactivate = function() {
+        this._active = false;
+        this._exit();
+        this._uninstallPartialMethods();
+    }
+
     //Enable condition for layer
     this.enableCondition();
 }
