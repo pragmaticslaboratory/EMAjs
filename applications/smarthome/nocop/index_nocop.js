@@ -16,14 +16,15 @@ home.setStrategy("occupied");
 home.doorBell();
 
 //user using the tv in the bedroom
-console.log(" ")
-tv.switch()
-tv.setVolume(21)
-home.doorBell()
+console.log(" ");
+tv.switch();
+tv.setVolume(21);
+home.doorBell();
 
-console.log(" ")
+console.log(" ");
 tv.switch();
 home.doorBell();
 bedroom.userExit();
+console.log(" ");
 home.setStrategy("free");
 home.doorBell();
