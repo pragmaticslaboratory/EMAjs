@@ -1,4 +1,4 @@
-const Appliance = require("./appliance")
+const Appliance = require("./nocop/appliance")
 
 function TV(name, room) {
     this.name = name;
