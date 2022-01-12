@@ -1,13 +1,13 @@
 const Room = require("./room");
 const Appliance = require("./appliance");
 const Layers = require("./layers");
-let {Layer, EMA} = require("../../..loader");
+let {Layer, EMA} = require("../../../loader");
 
 function _createDevices() {
     let doorChime = new Appliance("chime", "hall", true, 100);
     let tv = new Appliance("tv", "bedroom");
     let soundBar = new Appliance("Sound Bar", "Living Room");
-    let radio = new Appliance("Radio", "Kitchcen");
+    let radio = new Appliance("Radio", "Kitchen");
     return [doorChime, tv, soundBar, radio];
 }
 

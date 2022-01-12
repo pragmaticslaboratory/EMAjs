@@ -1,5 +1,5 @@
 const Layers = require("./layers");
-let {Layer, EMA} = require("../../..loader");
+let {Layer, EMA} = require("../../../loader");
 
 function Appliance(name, location, volume = 0) {
     this.name = name;

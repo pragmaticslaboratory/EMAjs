@@ -1,6 +1,5 @@
 const Room = require("./room");
 const Appliance = require("./appliance");
-//const TV = require("./tv");
 
 function _createDevices() {
     let doorChime = new Appliance("chime", "hall", true, 100);

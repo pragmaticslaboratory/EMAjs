@@ -1,5 +1,5 @@
 const Layers = require("./layers");
-let {Layer, EMA} = require("../../..loader");
+let {Layer, EMA} = require("../../../loader");
 
 function Room(name, appliances = []) {
     this.name = name;
