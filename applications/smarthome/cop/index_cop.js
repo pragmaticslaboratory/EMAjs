@@ -1,3 +1,4 @@
+let {EMA} = require("../../../loader");
 const Home = require("./home");
 
 let home = new Home();

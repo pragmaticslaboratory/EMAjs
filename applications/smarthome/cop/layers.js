@@ -6,7 +6,8 @@ EMA.deploy(InhabitedLayer);
 let InUseLayer = {condition: "", enter: function() {}, exit: function() {}};
 EMA.deploy(InUseLayer);
 
+let layers = EMA.getLayers();
 module.exports = {
-    InhabitedLayer: InhabitedLayer,
-    InUseLayer: InUseLayer
+    InhabitedLayer: layers[0],
+    InUseLayer: layers[1]
 }
