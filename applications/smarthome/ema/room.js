@@ -1,33 +1,27 @@
 const Layers = require("./layers");
-let {Layer, EMA} = require("../../../loader");
+let {Signal, Layer, EMA} = require("../../../loader");
 
-function Room(name, appliances = []) {
-    this.name = name;
-    this.appliances = Array.isArray(appliances)? appliances: [appliances];
-    this.users = 0;
-    this.userEnter = function() {
-        this.users += 1;
-        this.checkState();
-    };
-    this.userExit = function() {
-        this.users = Math.max(0, this.users - 1);
-        this.checkState();
-    };
-    this.checkState = function() {
-        if(this.users === 0)
-            EMA.deactivate(Layers.InhabitedLayer);
-        else
-            EMA.activate(Layers.InhabitedLayer);
-    };
-    this.getAppliance = function(name) {
+let Room = {
+    name: "",
+    appliances: [],
+    users: new Signal(0),
+    userEnter: function() {
+        this.users.value += 1;
+    },
+    userExit: function() {
+        this.users.value = Math.max(0, this.users.value - 1);
+    },
+    getAppliance: function(name) {
         return this.appliances.filter( app => app.name === name)[0];
-    };
-    this.playSound = function() {
+    },
+    playSound: function() {
         console.log("-");
-    };
-}
+    }
+};
 
-EMA.addPartialMethod(Layers.InhabitedLayer, Room, "playSound",
+EMA.exhibit(Room, {occupied: Room.users})
+
+EMA.addPartialMethod(Layers.OccupiedLayer, Room, "playSound",
     function() {
         this.appliances.forEach(a => {
             a.playSound("Advertise");

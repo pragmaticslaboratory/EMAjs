@@ -1,21 +1,21 @@
 const Layers = require("./layers");
 let {Signal, Layer, EMA} = require("../../../loader");
 
-function Appliance(name, location, volume = 0) {
-    this.name = name;
-    this.state = new Signal(0);
-    this.volume = Math.min(volume, 100);
-    this.location = location;
-    this.switch = function () {
+let Appliance = {
+    name: "",
+    state: new Signal(0),
+    volume: 50,
+    location: "",
+    switch: function () {
         this.state.value = !this.state.value;
-    }
-    this.setVolume = function (level) {
+    },
+    setVolume: function (level) {
         this.volume = level;
-    }
-    this.setLocation = function (roomName) {
+    },
+    setLocation: function (roomName) {
         this.location = roomName;
-    }
-    this.playSound = function(message) {
+    },
+    playSound: function(message) {
         let tempVolume = this.volume;
         if (tempVolume === 0) this.setVolume(60);
         let display  = this.state.value > 0 ? "on" : "off";
@@ -23,7 +23,7 @@ function Appliance(name, location, volume = 0) {
         console.log(`${message} output on ${this.location}'s ${this.name} at ${this.volume}% volume`)
         this.setVolume(tempVolume);
     }
-}
+};
 
 EMA.exhibit(Appliance, {inUse: Appliance.state});
 
