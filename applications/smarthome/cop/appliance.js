@@ -8,10 +8,10 @@ function Appliance(name, location, volume = 0) {
     this.location = location;
     this.switch = function () {
         this.state = !this.state;
-        if(this.state == 0)
-            Layers.InUseLayer.activate();
+        if(this.state === 0)
+            EMA.activate(Layers.InUseLayer);
         else
-            Layers.InUseLayer.deactivate();
+            EMA.deactivate(Layers.InUseLayer);
     }
 
     this.setVolume = function (level) {

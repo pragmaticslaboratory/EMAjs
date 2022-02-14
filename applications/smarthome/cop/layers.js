@@ -1,13 +1,11 @@
 let {EMA} = require("../../../loader");
 
-let InhabitedLayer = {condition: "", enter: function() {}, exit: function() {}};
-EMA.deploy(InhabitedLayer);
+let InhabitedLayer = {name:"inhabited", condition: "", enter: function() {}, exit: function() {}};
 
-let InUseLayer = {condition: "", enter: function() {}, exit: function() {}};
-EMA.deploy(InUseLayer);
+let InUseLayer = {name:"inuse", condition: "", enter: function() {}, exit: function() {}};
 
-let layers = EMA.getLayers();
+//let layers = EMA.getLayers();
 module.exports = {
-    InhabitedLayer: layers[0],
-    InUseLayer: layers[1]
+    InhabitedLayer: InhabitedLayer,
+    InUseLayer: InUseLayer
 }
