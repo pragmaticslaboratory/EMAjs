@@ -4,35 +4,44 @@ const Layers = require("./layers");
 let {Layer, EMA} = require("../../../loader");
 
 function _createDevices() {
-    let doorChime = new Appliance("chime", "hall", true, 100);
-    let tv = new Appliance("tv", "bedroom");
-    let soundBar = new Appliance("Sound Bar", "Living Room");
-    let radio = new Appliance("Radio", "Kitchen");
+    let doorChime = Object.create(Appliance);
+    doorChime.name = "chime"; doorChime.setLocation("hall"); doorChime.setVolume(100);
+    let tv = Object.create(Appliance);
+    tv.name = "tv"; tv.setLocation("bedroom");
+    let soundBar = Object.create(Appliance);
+    soundBar.name = "Sound Bar"; soundBar.setLocation("Living Room");
+    let radio = Object.create(Appliance);
+    radio.name = "Radio"; radio.setLocation("Kitchen");
     return [doorChime, tv, soundBar, radio];
 }
 
 function _createRooms() {
     let appliances = _createDevices();
-    let kitchen = new Room("kitchen", []);
-    let bedroom = new Room("bedroom", appliances[1]);
-    let livingroom = new Room("living", appliances[2]);
-    let bathroom = new Room("bathroom", appliances[3]);
-    let hall = new Room("hall", appliances[0]);
+    let kitchen = Object.create(Room);
+    kitchen.name = "kitchen"; kitchen.appliances = [];
+    let bedroom = Object.create(Room);
+    bedroom.name = "bedroom"; bedroom.appliances = [appliances[1]];
+    let livingroom = Object.create(Room);
+    livingroom.name = "living"; livingroom.appliances = [appliances[2]];
+    let bathroom = Object.create(Room);
+    bathroom.name = "bathroom"; bathroom.appliances = [appliances[3]];
+    let hall = Object.create(Room);
+    hall.name = "hall"; hall.appliances = [appliances[0]];
     return [kitchen, bedroom, livingroom, bathroom, hall];
 }
 
-function Home() {
-    this.rooms = _createRooms();
-    this.addRoom = function(name, appliances) {
+let Home = {
+    rooms: _createRooms(),
+    addRoom: function(name, appliances) {
         let r = new Room(name, appliances);
         this.rooms.push(r);
-    };
-    this.doorBell = function() {
+    },
+    doorBell: function() {
         console.log("Just door ring");
-    };
+    }
 }
 
-EMA.addPartialMethod(Layers.InhabitedLayer, Home, "doorBell",
+EMA.addPartialClassMethod(Layers.InhabitedLayer, Home, "doorBell",
     function() {
         console.log("Door ring + ");
         home.rooms.forEach(r => {
