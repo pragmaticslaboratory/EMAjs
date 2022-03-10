@@ -29,11 +29,4 @@ let Appliance = {
     }
 }
 
-EMA.addPartialClassMethod(Layers.InUseLayer, Appliance, "playSound",
-    function(message) {
-        let display  = this.state > 0 ? "on" : "off";
-        console.log(`No ${message} to ${this.name} as it is ${display}. Now displaying the message`);
-    }
-);
-
 module.exports = Appliance

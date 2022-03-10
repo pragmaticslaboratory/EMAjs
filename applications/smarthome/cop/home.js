@@ -41,15 +41,33 @@ let Home = {
     }
 }
 
-EMA.addPartialClassMethod(Layers.InhabitedLayer, Home, "doorBell",
+EMA.addPartialMethod(Layers.InhabitedLayer, Home, "doorBell",
     function() {
         console.log("Door ring + ");
-        home.rooms.forEach(r => {
+        Home.rooms.forEach(r => {
             r.playSound();
         });
     }
 );
 
+EMA.addPartialMethod(Layers.InhabitedLayer, Home.rooms, "playSound",
+    function() {
+        this.appliances.forEach(a => {
+            a.playSound("Advertise");
+            console.log(`ring ${this.name} alarm on: ${a.name}`);
+        })
+    }
+);
+
+console.log();
+EMA.addPartialMethod(Layers.InUseLayer,
+                        Home.rooms.reduce((acc, h) => acc.concat(h.appliances), []),
+                "playSound",
+    function(message) {
+        let display  = this.state > 0 ? "on" : "off";
+        console.log(`No ${message} to ${this.name} as it is ${display}. Now displaying the message`);
+    }
+);
 
 
 module.exports = Home

@@ -27,14 +27,6 @@ let Room = {
     }
 }
 
-EMA.addPartialClassMethod(Layers.InhabitedLayer, Room, "playSound",
-    function() {
-        this.appliances.forEach(a => {
-            a.playSound("Advertise");
-            console.log(`ring ${this.name} alarm on: ${a.name}`);
-        })
-    }
-);
 
 
 module.exports = Room
