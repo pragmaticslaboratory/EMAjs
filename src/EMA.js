@@ -94,6 +94,27 @@ class EMA {
         })
     };
 
+    //method for testing
+    activate(originalLayer) {
+        this.getLayers(function (layer) {
+            if(layer._name === originalLayer.name) {
+                layer._active = true;
+                layer._enter();
+                layer._installPartialMethod();
+            }
+        });
+    }
+
+    deactivate(originalLayer) {
+        this.getLayers(function (layer) {
+            if (layer._name === originalLayer.name) {
+                layer._active = false;
+                layer._exit();
+                layer._uninstallPartialMethods();
+            }
+        });
+    }
+
     //only for testing? (can you remove it?)
     getInactiveLayers() {
         return this.getLayers(function (layer) {
