@@ -27,11 +27,5 @@ let Appliance = {
 
 EMA.exhibit(Appliance, {inUse: Appliance.state});
 
-EMA.addPartialMethod(Layers.InUseLayer, Appliance, "playSound",
-    function(message) {
-        let display  = this.state.value > 0 ? "on" : "off";
-        console.log(`No ${message} to ${this.name} as it is ${display}. Now displaying the message`);
-    }
-);
 
 module.exports = Appliance
