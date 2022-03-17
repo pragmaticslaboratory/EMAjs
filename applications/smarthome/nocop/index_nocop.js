@@ -6,16 +6,16 @@ let tv = bedroom.getAppliance("tv");
 
 
 console.log("RUNNING SMARTHOME WITH NO COP");
-home.setStrategy("free");
+home.checkStatus(); //home is free
 home.doorBell();
 
-//user in a room
+/* USER IN A ROOM TEST */
 console.log(" ")
 bedroom.userEnter();
-home.setStrategy("occupied");
+home.checkStatus(); //home is occupied
 home.doorBell();
 
-//user using the tv in the bedroom
+/* APPLIANCE IN USE TEST */
 console.log(" ");
 tv.switch();
 tv.setVolume(21);
@@ -26,5 +26,20 @@ tv.switch();
 home.doorBell();
 bedroom.userExit();
 console.log(" ");
-home.setStrategy("free");
+home.checkStatus(); //home is free
+home.doorBell();
+
+/* BABY IN ROOM TEST */
+console.log(" ");
+bedroom.userEnter();
+bedroom.babyInRoom();
+home.checkStatus();
+home.doorBell();
+bedroom.babyLeave();
+home.doorBell();
+
+/* FULL HOME TEST */
+console.log(" ");
+home.rooms.forEach(r => r.userEnter());
+home.checkStatus(); //home is full
 home.doorBell();

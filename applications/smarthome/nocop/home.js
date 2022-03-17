@@ -34,8 +34,22 @@ function Home() {
         if(this.strategy)
             this.strategy.doorbell();
     };
+    this.checkStatus = function() {
+        let occupiedRooms = this.rooms.filter(r => r.users > 0)
+        if(occupiedRooms.length === this.rooms.length)
+            this.setStrategy("full");
+        else if(occupiedRooms.length === 0)
+            this.setStrategy("free");
+        else
+            this.setStrategy("occupied");
+    };
     this.setStrategy = function(status) {
-        this.strategy = status === "free" ? new SilentStrategy(this) : new SoundStrategy(this);
+        if(status === "free")
+            this.strategy = new SilentStrategy(this)
+        else if(status === "occupied")
+            this.strategy = new SoundStrategy(this);
+        else
+            this.strategy = new FullHomeStrategy(this);
     }
 }
 
@@ -58,5 +72,16 @@ function SoundStrategy(home) {
     }
 }
 SoundStrategy.prototype = new Home;
+
+function FullHomeStrategy(home) {
+    Home.call();
+    this.doorbell = function() {
+        console.log("Single door ring in");
+        let index = Math.floor(Math.random() * home.rooms.length);
+        home.rooms[index].playSound();
+    }
+}
+FullHomeStrategy.prototype = new Home;
+
 
 module.exports = Home
