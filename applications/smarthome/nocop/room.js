@@ -5,7 +5,7 @@ function Room(name, appliances = []) {
     this.appliances = Array.isArray(appliances)? appliances: [appliances];
     this.appliances.forEach(a => a.setStrategy());
     this.users = 0;
-    this.baby = true;
+    this.baby = false;
     this.babyInRoom = function() {
         this.baby = true;
         this.userEnter();
