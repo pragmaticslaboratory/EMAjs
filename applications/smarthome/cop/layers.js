@@ -4,8 +4,13 @@ let InhabitedLayer = {name:"inhabited", condition: "", enter: function() {}, exi
 
 let InUseLayer = {name:"inuse", condition: "", enter: function() {}, exit: function() {}};
 
-//let layers = EMA.getLayers();
+let BabyRoomLayer = {name: "babyRoom", condition: "", enter: function() {}, exit: function() {}};
+
+let FullHomeLayer = {name: "fullHome", condition: "", enter: function() {}, exit: function() {}};
+
 module.exports = {
     InhabitedLayer: InhabitedLayer,
-    InUseLayer: InUseLayer
+    InUseLayer: InUseLayer,
+    BabyRoomLayer: BabyRoomLayer,
+    FullHomeLayer: FullHomeLayer
 }

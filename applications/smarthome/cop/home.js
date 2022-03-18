@@ -32,21 +32,32 @@ function _createRooms() {
 
 let Home = {
     rooms: _createRooms(),
-    addRoom: function(name, appliances) {
-        let r = new Room(name, appliances);
-        this.rooms.push(r);
+    checkHome: function() {
+        let occupiedRooms = this.rooms.filter(r => r.users > 0)
+        if(occupiedRooms.length === this.rooms.length)
+            EMA.activate(Layers.FullHomeLayer);
+        else
+            EMA.deactivate(Layers.FullHomeLayer);
     },
     doorBell: function() {
-        console.log("Just door ring");
+        console.log("Base door ring");
     }
 }
 
 EMA.addPartialMethod(Layers.InhabitedLayer, Home, "doorBell",
     function() {
         console.log("Door ring + ");
-        Home.rooms.forEach(r => {
+        this.rooms.forEach(r => {
             r.playSound();
         });
+    }
+);
+
+EMA.addPartialMethod(Layers.FullHomeLayer, Home,"doorBell",
+    function() {
+        console.log("Single door ring + ");
+        let index = Math.floor(Math.random() * this.rooms.length);
+        this.rooms[index].playSound();
     }
 );
 
@@ -59,15 +70,20 @@ EMA.addPartialMethod(Layers.InhabitedLayer, Home.rooms, "playSound",
     }
 );
 
-console.log();
-EMA.addPartialMethod(Layers.InUseLayer,
-                        Home.rooms.reduce((acc, h) => acc.concat(h.appliances), []),
-                "playSound",
-    function(message) {
-        let display  = this.state > 0 ? "on" : "off";
-        console.log(`No ${message} to ${this.name} as it is ${display}. Now displaying the message`);
+EMA.addPartialMethod(Layers.BabyRoomLayer, Home.rooms, "playSound",
+    function() {
+        if(this.baby)
+            console.log("Not playing a sound as the baby sleeps");
     }
 );
 
+EMA.addPartialMethod(Layers.InUseLayer,
+                        Home.rooms.reduce((acc, r) => acc.concat(r.appliances), []),
+                "playSound",
+    function(message) {
+        let display  = this.state > 0 ? "on" : "off";
+        console.log(`No ${message} alert to ${this.name} as it is ${display}. Now displaying the message`);
+    }
+);
 
 module.exports = Home

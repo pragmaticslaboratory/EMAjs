@@ -5,6 +5,17 @@ let Room = {
     name: "",
     appliances: [],
     users: 0,
+    baby: false,
+    babyInRoom: function() {
+        this.baby = true;
+        this.userEnter();
+        EMA.activate(Layers.BabyRoomLayer);
+    },
+    babyLeave: function() {
+        this.baby = false;
+        this.userExit();
+        EMA.deactivate(Layers.BabyRoomLayer);
+    },
     userEnter: function() {
         this.users += 1;
         this.checkState();
