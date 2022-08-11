@@ -1,7 +1,7 @@
 const Room = require("./room");
 const Appliance = require("./appliance");
 const Layers = require("./layers");
-let {Signal, EMA} = require("../../../loader");
+let {EMA} = require("../../../loader");
 
 function _createDevices() {
     let doorChime = Object.create(Appliance);

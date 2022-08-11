@@ -1,16 +1,11 @@
 let {EMA} = require("../../../loader");
 const Home = require("./home");
-const Layers = require("./layers");
-
+1
 let bedroom = Home.rooms[1];
 let tv = bedroom.getAppliance("tv");
 
 
 console.log("RUNNING SMARTHOME WITH COP");
-EMA.deploy(Layers.InhabitedLayer);
-EMA.deploy(Layers.InUseLayer);
-EMA.deploy(Layers.BabyRoomLayer);
-EMA.deploy(Layers.FullHomeLayer);
 Home.doorBell();
 
 //user in a room

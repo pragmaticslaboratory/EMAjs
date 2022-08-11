@@ -78,7 +78,7 @@ EMA.addPartialMethod(Layers.BabyRoomLayer, Home.rooms, "playSound",
 );
 
 EMA.addPartialMethod(Layers.InUseLayer,
-                        Home.rooms.reduce((acc, r) => acc.concat(r.appliances), []),
+                     Home.rooms.reduce((acc, r) => acc.concat(r.appliances), []),
                 "playSound",
     function(message) {
         let display  = this.state > 0 ? "on" : "off";

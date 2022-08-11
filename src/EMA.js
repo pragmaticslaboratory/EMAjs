@@ -110,6 +110,7 @@ class EMA {
             if (layer._name === originalLayer.name) {
                 layer._active = false;
                 layer._exit();
+                layer.cleanCondition();
                 layer._uninstallPartialMethods();
             }
         });

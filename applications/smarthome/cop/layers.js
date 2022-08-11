@@ -8,6 +8,11 @@ let BabyRoomLayer = {name: "babyRoom", condition: "", enter: function() {}, exit
 
 let FullHomeLayer = {name: "fullHome", condition: "", enter: function() {}, exit: function() {}};
 
+EMA.deploy(InhabitedLayer);
+EMA.deploy(InUseLayer);
+EMA.deploy(BabyRoomLayer);
+EMA.deploy(FullHomeLayer);
+
 module.exports = {
     InhabitedLayer: InhabitedLayer,
     InUseLayer: InUseLayer,

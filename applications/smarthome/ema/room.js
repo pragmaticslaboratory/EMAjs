@@ -33,7 +33,6 @@ let Room = {
 
 EMA.exhibit(Room, {occupied: Room.users});
 EMA.exhibit(Room, {withBaby: Room.baby});
-EMA.exhibit(Room, {full: Room.fullHome});
 
 
 module.exports = Room
