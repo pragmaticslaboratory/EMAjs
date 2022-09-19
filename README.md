@@ -1,7 +1,7 @@
 # EMA-js
-RAI-JS: An JavaScript implementation of an Expressive and Modular Activation (EMA) mechanism for Context-Oriented Programming. 
+A JavaScript implementation of an Expressive and Modular Activation (EMA) mechanism for Context-Oriented Programming. 
 
-Author: Paul Leger & Nicolás Cardozo
+Author: [Paul Leger](http://pleger.cl) & Nicolás Cardozo
 
 License
 ----
