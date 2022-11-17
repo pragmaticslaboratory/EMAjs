@@ -1,6 +1,6 @@
 let {EMA} = require("../../../loader");
 const Home = require("./home");
-1
+
 let bedroom = Home.rooms[1];
 let tv = bedroom.getAppliance("tv");
 
