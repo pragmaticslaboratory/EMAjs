@@ -1,7 +1,7 @@
 const Layer = require('./Layer');
 const PartialMethodsPool = require('./PartialMethodsPool');
 const OriginalMethodsPool = require('./OriginalMethodsPool');
-
+// Singleton pattern for EMA
 class EMA {
 
     constructor() {
